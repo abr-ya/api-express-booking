@@ -1,4 +1,5 @@
 import Hotel from "../models/Hotel.js";
+import { TYPE_IMAGES } from "./constants.js";
 
 export const createHotel = async (req, res, next) => {
   const newHotel = new Hotel(req.body);
@@ -71,6 +72,7 @@ export const countByCity = async (req, res, next) => {
   }
 };
 
+// todo: Images ==> Admin panel!
 export const countByType = async (_req, res, next) => {
   try {
     const hotelCount = await Hotel.countDocuments({ type: "hotel" });
@@ -80,11 +82,11 @@ export const countByType = async (_req, res, next) => {
     const cabinCount = await Hotel.countDocuments({ type: "cabin" });
 
     res.status(200).json([
-      { type: "hotel", count: hotelCount },
-      { type: "apartments", count: apartmentCount },
-      { type: "resorts", count: resortCount },
-      { type: "villas", count: villaCount },
-      { type: "cabins", count: cabinCount },
+      { type: "hotel", count: hotelCount, imgSrc: TYPE_IMAGES[0] },
+      { type: "apartments", count: apartmentCount, imgSrc: TYPE_IMAGES[1] },
+      { type: "resorts", count: resortCount, imgSrc: TYPE_IMAGES[2] },
+      { type: "villas", count: villaCount, imgSrc: TYPE_IMAGES[3] },
+      { type: "cabins", count: cabinCount, imgSrc: TYPE_IMAGES[4] },
     ]);
   } catch (err) {
     next(err);
