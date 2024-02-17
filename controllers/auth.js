@@ -37,11 +37,11 @@ export const login = async (req, res, next) => {
 
     const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.SECRET);
 
-    const { password, isAdmin, ...otherDetails } = user._doc;
+    const { isAdmin, email, _id: id, username } = user._doc;
     res
       .cookie("access_token", token, { httpOnly: true, secure: false })
       .status(200)
-      .json({ details: { ...otherDetails }, isAdmin, token }); // токен тут избыточен, пока в куки)
+      .json({ details: { id, email, username }, isAdmin, token }); // токен тут избыточен, пока в куки)
   } catch (err) {
     next(err);
   }
