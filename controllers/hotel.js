@@ -43,13 +43,19 @@ export const getHotel = async (req, res, next) => {
   }
 };
 
+const makeCaseInsensitive = (val) => new RegExp(`^${val}$`, 'i');
+
 export const getHotels = async (req, res, next) => {
-  const { min, max, limit, ...others } = req.query;
+  const { min, max, limit, city, ...others } = req.query;
+
+  const findParams = {
+    ...others,
+    cheapestPrice: { $gt: min | 1, $lt: max || 999 },
+  };
+  if (city) findParams.city = makeCaseInsensitive(city);
+  
   try {
-    const hotels = await Hotel.find({
-      ...others,
-      cheapestPrice: { $gt: min | 1, $lt: max || 999 },
-    }).limit(limit);
+    const hotels = await Hotel.find(findParams).limit(limit);
     const clearedHotels = hotels.map(el => {
       const hotel = el._doc;
       const { _id: id } = hotel;
