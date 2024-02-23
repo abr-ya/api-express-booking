@@ -50,7 +50,14 @@ export const getHotels = async (req, res, next) => {
       ...others,
       cheapestPrice: { $gt: min | 1, $lt: max || 999 },
     }).limit(limit);
-    res.status(200).json(hotels);
+    const clearedHotels = hotels.map(el => {
+      const hotel = el._doc;
+      const { _id: id } = hotel;
+      delete hotel._id;
+      delete hotel.__v;
+      return { id, ...hotel }
+    });
+    res.status(200).json(clearedHotels);
   } catch (err) {
     next(err);
   }
