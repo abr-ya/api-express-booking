@@ -50,7 +50,7 @@ export const getHotels = async (req, res, next) => {
 
   const findParams = {
     ...others,
-    cheapestPrice: { $gt: min | 1, $lt: max || 999 },
+    cheapestPrice: { $gte: min | 1, $lte: max || 999 },
   };
   if (city) findParams.city = makeCaseInsensitive(city);
   

@@ -26,7 +26,7 @@ router.put("/:id", verifyAdmin, updateHotel);
 router.delete("/:id", verifyAdmin, deleteHotel);
 
 // GET
-router.get("/find/:id", getHotel);
+router.get("/:id", getHotel);
 
 // COUNT BY
 router.get("/countByCity", countByCity);
