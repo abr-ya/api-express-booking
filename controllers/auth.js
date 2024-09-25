@@ -25,7 +25,7 @@ export const register = async (req, res, next) => {
 
     const { cookie, json } = createCookieAndJson(newUser);
 
-    res.cookie(...cookie).status(200).json(json);
+    res.cookie(...cookie).status(201).json(json);
   } catch (err) {
     next(err);
   }
