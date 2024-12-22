@@ -16,6 +16,10 @@ const router = express.Router();
 // GET ALL
 router.get("/", getHotels);
 
+// GET COUNT BY
+router.get("/countByCity", countByCity);
+router.get("/countByType", countByType);
+
 // CREATE
 router.post("/", verifyAdmin, createHotel);
 
@@ -27,9 +31,5 @@ router.delete("/:id", verifyAdmin, deleteHotel);
 
 // GET
 router.get("/:id", getHotel);
-
-// COUNT BY
-router.get("/countByCity", countByCity);
-router.get("/countByType", countByType);
 
 export default router;
