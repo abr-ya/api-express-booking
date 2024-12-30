@@ -9,6 +9,7 @@ import {
   getHotel,
   countByCity,
   countByType,
+  getHotelWithRooms,
 } from "../controllers/hotel.js";
 
 const router = express.Router();
@@ -30,6 +31,7 @@ router.put("/:id", verifyAdmin, updateHotel);
 router.delete("/:id", verifyAdmin, deleteHotel);
 
 // GET
+router.get("/with-rooms/:id", getHotelWithRooms);
 router.get("/:id", getHotel);
 
 export default router;

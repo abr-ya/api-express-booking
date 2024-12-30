@@ -1,4 +1,5 @@
 import Hotel from "../models/Hotel.js";
+import Room from "../models/Room.js";
 import { TYPE_IMAGES } from "./constants.js";
 
 export const createHotel = async (req, res, next) => {
@@ -38,6 +39,17 @@ export const getHotel = async (req, res, next) => {
   try {
     const hotel = await Hotel.findById(req.params.id);
     res.status(200).json(hotel);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getHotelWithRooms = async (req, res, next) => {
+  try {
+    const hotel = await Hotel.findById(req.params.id);
+    // todo: correct relationships?
+    const rooms = await Promise.all(hotel.rooms.map((room) => Room.findById(room)));
+    res.status(200).json({ ...hotel._doc, rooms});
   } catch (err) {
     next(err);
   }
