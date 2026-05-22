@@ -153,3 +153,72 @@ or from the cookie:
 ```text
 access_token=<token>
 ```
+
+## Update To TypeScript
+
+Recommended migration plan:
+
+1. Install TypeScript tooling:
+
+```bash
+npm install -D typescript tsx @types/node @types/express
+```
+
+2. Add `tsconfig.json` with ES module support and Node-friendly settings.
+
+3. Update scripts in `package.json`:
+
+```json
+{
+  "dev": "tsx watch index.ts",
+  "start": "node dist/index.js",
+  "build": "tsc"
+}
+```
+
+4. Rename project files from `.js` to `.ts`.
+
+5. Update local imports to match the TypeScript build strategy.
+
+6. Type Express handlers:
+
+```ts
+import type { Request, Response, NextFunction } from "express";
+```
+
+7. Add interfaces for Mongoose models:
+
+- `User`
+- `Hotel`
+- `Room`
+- `Product`
+
+8. Extend the Express `Request` type for JWT user data:
+
+```ts
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        isAdmin: boolean;
+      };
+    }
+  }
+}
+```
+
+9. Validate required env variables before using them, especially `MONGO_USER`, `MONGO_PASS`, and `SECRET`.
+
+10. Replace direct `_doc` usage with safer object conversion, for example `.toObject()`.
+
+11. Fix and type the auth middleware flow in `utils/verifyToken`.
+
+12. Build and run the project:
+
+```bash
+npm run build
+npm run dev
+```
+
+Expected complexity: low to medium. The project is small and already split into clear `routes`, `controllers`, `models`, and `utils` layers, so the migration can be done incrementally.
